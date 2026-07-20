@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "highlight.js/styles/github-dark.css";
+
+/* ສຳຄັນ! Tailwind v4 ຕ້ອງປະກາດ dark variant ເອງ ໃນ CSS ໂດຍກົງ
+   (v3 ໃຊ້ darkMode: "class" ໃນ tailwind.config.ts — v4 ບໍ່ມີໄຟລ໌ນັ້ນອີກ)
+   ນີ້ຄືສິ່ງທີ່ເຮັດໃຫ້ class `dark:bg-...` ເຮັດວຽກໄດ້ຕອນມີ class="dark" ຢູ່ <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-ink: #E5E7EB;         /* ຂໍ້ຄວາມ (dark mode ເປັນຄ່າ default) */
+  --color-ink-light: #111827;   /* ຂໍ້ຄວາມ ຕອນ light mode */
+  --color-base: #0B0F14;        /* ພື้นหลัง dark */
+  --color-base-light: #FFFFFF;  /* ພື້ນຫຼັງ light */
+  --color-surface: #131A22;     /* ພື້ນ card/section dark */
+  --color-surface-light: #F5F7FA;
+  --color-accent: #2DD4BF;      /* teal — ໃຊ້ແທນ gold ເກົ່າ */
+  --color-accent-dark: #14B8A6;
+
+  --font-lao-serif: "Noto Serif Lao", "Phetsarath OT", serif;
+  --font-lao-sans: "Noto Sans Lao", "Phetsarath OT", sans-serif;
+}
+
+body {
+  background-color: var(--color-base-light);
+  color: var(--color-ink-light);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dark body {
+  background-color: var(--color-base);
+  color: var(--color-ink);
+}
+
+.prose {
+  --tw-prose-body: var(--color-ink-light);
+  --tw-prose-headings: var(--color-ink-light);
+  --tw-prose-links: var(--color-accent-dark);
+  --tw-prose-bold: var(--color-ink-light);
+  --tw-prose-quotes: var(--color-ink-light);
+  --tw-prose-quote-borders: var(--color-accent-dark);
+}
+
+.dark .prose {
+  --tw-prose-body: var(--color-ink);
+  --tw-prose-headings: var(--color-ink);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-ink);
+  --tw-prose-quotes: var(--color-ink);
+  --tw-prose-quote-borders: var(--color-accent);
+}
+
+.prose a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent-dark) 40%, transparent);
+  transition: text-decoration-color 0.15s;
+}
+
+.dark .prose a {
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+.prose a:hover {
+  text-decoration-color: var(--color-accent-dark);
+}
+
+.dark .prose a:hover {
+  text-decoration-color: var(--color-accent);
+}
+
+.prose h1, .prose h2, .prose h3 {
+  font-family: var(--font-lao-serif);
+}
+
+/* ===== Code block styling — ໃຫ້ເບິ່ງເປັນມືອາຊີບ ===== */
+
+.prose pre {
+  background-color: #0d1117 !important;
+  border-radius: 0.75rem;
+  padding: 1.25rem 4.5rem 1.25rem 1.25rem;
+  overflow-x: auto;
+  border: 1px solid rgba(45, 212, 191, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.prose pre code {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  background: none;
+  padding: 0;
+}
+
+/* Inline code (`ຄືແບບນີ້`) — ແຍກ style ຈາກ code block */
+.prose :not(pre) > code {
+  background-color: rgba(45, 212, 191, 0.1);
+  color: var(--color-accent-dark);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.35rem;
+  font-size: 0.875em;
+  font-weight: 600;
+}
+
+.dark .prose :not(pre) > code {
+  color: var(--color-accent);
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: "";
+}
+
+/* Scrollbar ບາງໆ ຕອນ code ຍາວກວ່າກ່ອງ */
+.prose pre::-webkit-scrollbar {
+  height: 6px;
+}
+.prose pre::-webkit-scrollbar-thumb {
+  background-color: rgba(45, 212, 191, 0.4);
+  border-radius: 3px;
+}
