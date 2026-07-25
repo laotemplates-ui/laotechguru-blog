@@ -7,6 +7,7 @@ import { Menu, X, Search, ChevronDown } from "lucide-react";
 import SearchModal from "@/components/SearchModal";
 import ThemeToggle from "@/components/ThemeToggle";
 import { CATEGORY_LABELS, type Category } from "@/lib/category-list";
+import Image from "next/image";
 
 
 const categoryEntries = Object.entries(CATEGORY_LABELS) as [Category, string][];
@@ -28,11 +29,18 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 bg-base-light/80 dark:bg-base/80 backdrop-blur-md border-b border-ink-light/10 dark:border-ink/10">
         <div className="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between gap-6">
           <Link
-            href="/"
-            className="shrink-0 font-lao-serif font-bold text-lg text-ink-light dark:text-ink outline-none focus:outline-none focus:ring-0"
-          >
-            Lao<span className="text-accent-dark dark:text-accent">Tech</span>Guru
-          </Link>
+              href="/"
+              className="shrink-0 outline-none focus:outline-none focus:ring-0"
+            >
+              <Image
+                src="/logo-horizontal.png"
+                alt="LaoTechGuru"
+                width={170}
+                height={42}
+                className="h-auto w-[170px]"
+                priority
+              />
+            </Link>
 
           <nav className="hidden md:flex items-center gap-6">
             <Link
