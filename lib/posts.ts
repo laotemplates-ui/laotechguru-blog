@@ -24,6 +24,17 @@ export type Post = PostMeta & {
   content: string;
 };
 
+// ແປງຄ່າ date ໃຫ້ເປັນ string "YYYY-MM-DD" ສະເໝີ
+// ຈຳເປັນເພາະ YAML ຈະອ່ານ `date: 2026-07-29` (ບໍ່ມີ quote) ເປັນ Date object
+// ແຕ່ອ່ານ `date: "2026-07-29"` (ມີ quote) ເປັນ string — 2 ແບບນີ້ຖ້າປະປົນກັນ
+// ຈະເຮັດໃຫ້ sort() ຮຽງລຳດັບຜິດ (ບົດຄວາມໃໝ່ອາດໄປຢູ່ລຸ່ມສຸດແທນທີ່ຈະຢູ່ເທິງສຸດ)
+function normalizeDate(date: unknown): string {
+  if (date instanceof Date) {
+    return date.toISOString().split("T")[0]; // → "YYYY-MM-DD"
+  }
+  return String(date);
+}
+
 // ອ່ານ frontmatter 1 ໄຟລ໌ + ກວດຄວາມຖືກຕ້ອງ (ໃຊ້ຮ່ວມກັນລະຫວ່າງ getAllPosts ແລະ getPostBySlug)
 function parsePostMeta(slug: string, data: Record<string, any>): PostMeta {
   if (!data.title || !data.date || !data.description) {
@@ -41,7 +52,7 @@ function parsePostMeta(slug: string, data: Record<string, any>): PostMeta {
   return {
     slug,
     title: data.title,
-    date: data.date,
+    date: normalizeDate(data.date),
     description: data.description,
     category: data.category as Category,
     image: data.image,
@@ -62,7 +73,11 @@ export function getAllPosts(): PostMeta[] {
       return parsePostMeta(slug, data);
     });
 
-  return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  // ໃຊ້ Date object ປຽບທຽບ ແທນ string comparison — ທົນທານກວ່າ
+  // (string comparison ຈະຮຽງຜິດຖ້າຮູບແບບວັນທີບໍ່ຄົງທີ່ 100% ລະຫວ່າງໄຟລ໌)
+  return posts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 }
 
 // ດຶງລາຍຊື່ slug ທັງໝົດ (ໃຊ້ໃນ generateStaticParams)
