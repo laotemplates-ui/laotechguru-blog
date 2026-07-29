@@ -14,6 +14,7 @@ export default config({
       slugField: "title",
       path: "posts/*",
       format: { contentField: "content" },
+      columns: ["title", "category", "date"],
       schema: {
         title: fields.slug({
           name: { label: "ຫົວຂໍ້ບົດຄວາມ" },
@@ -47,7 +48,7 @@ export default config({
         }),
         content: fields.markdoc({
           label: "ເນື້ອຫາບົດຄວາມ",
-            extension: "md",   // ← ເພີ່ມແຖວນີ້
+          extension: "md",
         }),
       },
     }),
